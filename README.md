@@ -7,3 +7,8 @@ De plus nous voulions également chiffré les données et les requêtes côté c
 
 
 Nous vous remercions pour votre indulgence 
+
+# Membre du groupe
+Ryan MENDY
+Saliha BELAID
+Deodat AMEVOR
