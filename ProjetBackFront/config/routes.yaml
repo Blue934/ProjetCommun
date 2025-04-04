@@ -1,0 +1,49 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+home:
+    path: /
+    controller: App\Controller\MyController::home
+
+
+login:
+    path: /login
+    controller: App\Controller\MyController::login
+    methods: [GET, POST]
+
+register:
+    path: /register
+    controller: App\Controller\MyController::register
+    methods: [GET, POST]
+
+logout:
+    path: /logout
+    controller: App\Controller\MyController::logout
+    methods: [GET, POST]
+
+add_photo:
+    path: /add-photo
+    controller: App\Controller\MyController::addPhoto
+    methods: [POST]
+
+like_image:
+    path: /image/{id}/like
+    controller: App\Controller\MyController::likeImage
+    methods: [POST, PUT] # PUT pour mettre à jour
+
+comment_image:
+    path: /image/{id}/comment
+    controller: App\Controller\MyController::commentImage
+    methods: [POST, GET]
+    requirements:
+        id: ".+"
+
+serve_image:
+    path: /image/{filename}
+    controller: App\Controller\ImageController::serveImage
+    requirements:
+        filename: ".+"
+    methods: [GET]

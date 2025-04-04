@@ -1,0 +1,18 @@
+namespace App\Service;
+
+use Psr\Log\LoggerInterface;
+
+class LoggerService
+{
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    public function logEvent(string $event): void
+    {
+        $this->logger->info($event);
+    }
+}

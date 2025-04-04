@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+    /* Styles globaux */
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+    }
+    nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            width: 100%;
+            padding: 0%;
+            font-size: 85%;  
+    }
+    nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+    }
+    nav a:hover {
+            background-color: #555;
+    }
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .image-item {
+        border-radius: 10px;
+        background-color: #333333;
+        background-image: 
+        color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .image-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    .image-item img {
+        width: 100%; /* Ajuste la largeur de l'image à celle du conteneur */
+        height: 150px; /* Définit une hauteur fixe pour uniformiser toutes les images */
+        object-fit: cover; /* Recadre l'image pour qu'elle remplisse bien le conteneur */
+        display: block;
+    }
+    .image-info {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Bouton et formulaires */
+    form {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #333333;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    form input, form button {
+        width: calc(100% - 20px);
+        margin: 10px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    form input {
+        background-color: #444;
+        color: #fff;
+    }
+    form button {
+        background-color: #007BFF;
+        color: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    form button:hover {
+        background-color: #0056b3;
+    }
+    .no-images {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #888;
+    }
+</style>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <!-- présent uniquement pour garentir de l'effet visuel et opérationnel de la bar de naviguation -->
+    <nav>
+        <a href="/">Accueil</a>
+        <a href="/login">Connexion</a>
+        <a href="/register">Inscription</a>
+        <a href="/">Nous Contacter</a>
+    </nav>
+
+
+    <!-- Formulaire de Connexion -->
+    <form id="loginForm">
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required />
+        <input type="password" name="password" placeholder="Mot de passe" required />
+        <button type="submit">Connexion</button>
+    </form>
+
+    <!-- Déconnexion -->
+    <button id="logoutButton" style="display: block; margin: 20px auto;">Déconnexion</button>
+
+    <!-- Formulaire d'Inscription -->
+    <form id="registerForm">
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Mot de passe" required />
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <!-- Formulaire d'Ajout de Photos -->
+    <form id="addPhotoForm">
+        <input type="file" name="photo" required />
+        <button type="submit">Ajouter la photo</button>
+    </form>
+
+    <!-- Grille d'Images -->
+    <div class="image-grid">
+        {% if images is defined and images|length > 0 %}
+            {% for image in images %}
+                <div class="image-item">
+                    <img src="{{ asset('uploads/' ~ image.path) }}" alt="Image de {{ image.user }}">
+                    <div class="image-info">
+                        <p><strong>{{ image.user }}</strong> - {{ image.city }} - ❤️{{ image.likes}} </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-images">Aucune image disponible pour le moment.</p>
+        {% endif %}
+    </div>
+
+<script>
+    function Redirection(imageUrl) {
+    console.log(`Redirection vers l'URL : ${imageUrl}`);
+    window.location.href = imageUrl; // Redirige vers l'URL de l'image
+    }
+
+    // Clique sur l'image 
+    document.querySelectorAll('.image-item img').forEach(image => {
+    image.addEventListener('click', () => {
+        //alert(`Tu as cliqué sur l'image : ${image.src}`);//
+        Redirection(image.src)
+        });
+    });
+        // Fonction générique pour gérer les erreurs
+    function handleFetchError(error) {
+        console.error('Une erreur est survenue :', error);
+        alert('Une erreur est survenue, veuillez réessayer.');
+    }
+
+    // Fonction générique pour envoyer des données via Fetch
+    async function sendRequest(url, method, body = null, headers = {}) {
+        try {
+            const options = { method };
+            if (body) options.body = body;
+            if (Object.keys(headers).length > 0) options.headers = headers;
+
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            handleFetchError(error);
+            return null;
+        }
+    }
+
+    // Ajout de photo
+    document.getElementById('addPhotoForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = await sendRequest('/add-photo', 'POST', formData);
+        if (data) alert(data.message);
+    });
+
+    // Inscription
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const jsonBody = JSON.stringify(Object.fromEntries(formData));
+        const data = await sendRequest('/register', 'POST', jsonBody, { 'Content-Type': 'application/json' });
+        if (data) alert(data.message);
+    });
+
+    // Connexion
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const jsonBody = JSON.stringify(Object.fromEntries(formData));
+        const data = await sendRequest('/login', 'POST', jsonBody, { 'Content-Type': 'application/json' });
+        if (data) alert(data.message);
+    });
+
+    // Déconnexion
+    document.getElementById('logoutButton').addEventListener('click', async () => {
+        const data = await sendRequest('/logout', 'POST');
+        if (data) alert(data.message);
+    });
+</script>
+</body>
+</html>

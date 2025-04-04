@@ -1,0 +1,50 @@
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+class ApiController extends AbstractController
+{
+    #[Route('/api/data', name: 'api_data')]
+    public function fetchData(): JsonResponse
+    {
+        $data = [
+            'status' => 'success',
+            'message' => 'Voici vos données.',
+            'data' => [1, 2, 3, 4, 5]
+        ];
+
+        return new JsonResponse($data);
+    }
+}
+
+
+// Traitement des fichier //
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+class FileUploadService
+{
+    private $uploadDirectory;
+
+    public function __construct(string $uploadDirectory)
+    {
+        $this->uploadDirectory = $uploadDirectory;
+    }
+
+    public function uploadFile(UploadedFile $file): string
+    {
+        $filename = uniqid() . '.' . $file->guessExtension();
+
+        try {
+            $file->move($this->uploadDirectory, $filename);
+        } catch (FileException $e) {
+            throw new \Exception('Échec de l\'upload');
+        }
+
+        return $filename;
+    }
+}
