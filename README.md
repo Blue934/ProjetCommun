@@ -9,9 +9,12 @@ De plus nous voulions également chiffré les données et les requêtes côté c
 Nous vous remercions pour votre indulgence 
 
 # Membre du groupe
-Ryan MENDY
-Saliha BELAID
-Deodat AMEVOR
+- Ryan MENDY
+- Saliha BELAID
+- Deodat AMEVOR
+
+# Lien figma
+https://www.figma.com/design/d9u1B9VusT8C0sIt5lIP3z/Symfony?node-id=0-1&t=ZNilzICJAq4YLH9a-1
 
 
 Pour une démonstration optimale nous vous conseillons d'exécuter le scripts Generateurs de données fictives.php présent dans le dossier courant
