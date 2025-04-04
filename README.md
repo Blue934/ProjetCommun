@@ -7,3 +7,6 @@ De plus nous voulions également chiffré les données et les requêtes côté c
 
 
 Nous vous remercions pour votre indulgence 
+
+
+Pour une démonstration optimale nous vous conseillons d'exécuter le scripts Generateurs de données fictives.php présent dans le dossier courant
